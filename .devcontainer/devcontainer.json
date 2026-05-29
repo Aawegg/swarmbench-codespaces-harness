@@ -1,0 +1,62 @@
+{
+  // Portable SwarmBench / Harbor Codespaces harness.
+  // Repo-name-agnostic: HARBOR_DIR is derived at runtime by scripts/env.sh
+  // (it looks for <repo>/harbor/harbor_src), so this file does NOT hardcode
+  // the repository name anywhere.
+  "name": "SwarmBench Harbor Runner",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": true,
+      "dockerDashComposeVersion": "v2"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11",
+      "installTools": false
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": false,
+      "username": "vscode"
+    },
+    "ghcr.io/devcontainers/features/sshd:1": {
+      "version": "latest"
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "remoteUser": "vscode",
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+  "secrets": {
+    "FIREWORKS_API_KEY": {
+      "description": "Fireworks API key for Kimi/Harbor agent runs."
+    },
+    "SWARM_MODEL_DEDICATED": {
+      "description": "Dedicated Fireworks deployment URL for swarm-kimi runs (preferred)."
+    },
+    "SWARM_MODEL_SHARED": {
+      "description": "Shared serverless Kimi model (fallback if no dedicated deployment)."
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "tamasfe.even-better-toml",
+        "redhat.vscode-yaml"
+      ],
+      "settings": {
+        "files.exclude": {
+          "**/__pycache__": true,
+          "**/.venv": true
+        }
+      }
+    }
+  }
+}
